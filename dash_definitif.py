@@ -158,12 +158,9 @@ cordonnees.columns=["cord_x","cord_y","masa","categories","type_cat"]
 cordonnees=cordonnees.drop("Cause_Codes d'utilisation particulière")
 cordonnees=cordonnees.round(2)
 
-def ACM_graph():
-    fig4= px.scatter(cordonnees, x="cord_x", y="cord_y", color="type_cat",
-                 hover_name="categories", size_max=60, title='Analyse de Correspondance Multiple' )
-    fig4.update_xaxes(zeroline=True, zerolinewidth=2, zerolinecolor='LightPink')
-    fig4.update_yaxes(zeroline=True, zerolinewidth=2, zerolinecolor='LightPink')
-    return fig4
+fig4= px.scatter(cordonnees, x="cord_x", y="cord_y", color="type_cat",hover_name="categories", size_max=60, title='Analyse de Correspondance Multiple' )
+fig4.update_xaxes(zeroline=True, zerolinewidth=2, zerolinecolor='LightPink')
+fig4.update_yaxes(zeroline=True, zerolinewidth=2, zerolinecolor='LightPink')
 
 
 b=data_2[["Age","Cause"]]
@@ -198,12 +195,10 @@ cordonneesb.columns=["cord_x","cord_y","masa","categories","type_cat"]
 cordonneesb=cordonneesb.drop("Cause_Codes d'utilisation particulière")
 cordonneesb=cordonneesb.round(2)
 
-def ACS_age_cause():
-    fig5 = px.scatter(cordonneesb, x="cord_x", y="cord_y", color="type_cat",
-                 hover_name="categories", size_max=60,title='Analyse de Correspondance Simple Age-Cause' ,width=500)
-    fig5.update_xaxes(zeroline=True, zerolinewidth=2, zerolinecolor='LightPink')
-    fig5.update_yaxes(zeroline=True, zerolinewidth=2, zerolinecolor='LightPink')
-    return fig5
+fig5 = px.scatter(cordonneesb, x="cord_x", y="cord_y", color="type_cat",hover_name="categories", size_max=60,title='Analyse de Correspondance Simple Age-Cause' ,width=500)
+fig5.update_xaxes(zeroline=True, zerolinewidth=2, zerolinecolor='LightPink')
+fig5.update_yaxes(zeroline=True, zerolinewidth=2, zerolinecolor='LightPink')
+
 
 
 c=data_2[["Genre","Cause"]]
@@ -239,12 +234,10 @@ cordonneesc=cordonneesc.drop("Cause_Codes d'utilisation particulière")
 cordonneesc=cordonneesc.round(2)
 
 
-def ACS_genre_cause():
-    fig6 = px.scatter(cordonneesc, x="cord_x", y="cord_y", color="type_cat",
-                 hover_name="categories", size_max=60,title='Analyse de Correspondance Simple Genre-Cause',width=500 )
-    fig6.update_xaxes(zeroline=True, zerolinewidth=2, zerolinecolor='LightPink')
-    fig6.update_yaxes(zeroline=True, zerolinewidth=2, zerolinecolor='LightPink')
-    return fig6
+fig6 = px.scatter(cordonneesc, x="cord_x", y="cord_y", color="type_cat",hover_name="categories", size_max=60,title='Analyse de Correspondance Simple Genre-Cause',width=500 )
+fig6.update_xaxes(zeroline=True, zerolinewidth=2, zerolinecolor='LightPink')
+fig6.update_yaxes(zeroline=True, zerolinewidth=2, zerolinecolor='LightPink')
+
 
 app = dash.Dash(__name__,external_stylesheets=[dbc.themes.BOOTSTRAP])
 server = app.server
@@ -482,13 +475,13 @@ def render_page_content(pathname):
             dbc.Row([
                 dbc.Col(dbc.Card([
                     dbc.CardBody([
-                        dcc.Graph(id="AC-age_genre", figure=ACS_age_cause()),
+                        dcc.Graph(id="AC-age_genre", figure=fig5),
                         html.P("Si nous examinons la catégorie 'Age_85+', nous constatons que les maladies causant le plus de décès dans cette catégorie sont les maladies de l'appareil circulatoire, les Maladies de l'appareil respiratoire, les Maladies de l'appareil génito-urinaire et Troubles mentaux et du comportement. Des conclusions similaires peuvent être formulées en examinant les maladies en fonction des différentes catégories d'âge. Dans le cas de l'opposé par coordonnées, on peut dire qu'il n'y a pas de relation.")
                     ])
                 ])),
                 dbc.Col(dbc.Card([
                     dbc.CardBody([
-                        dcc.Graph(id='Ac-genre_age', figure=ACS_genre_cause()),
+                        dcc.Graph(id='Ac-genre_age', figure=fig6),
                         html.P("On observe que la première composante discrimine le sexe des individus, ce qui signifie qu'à droite on trouve le sexe masculin et à gauche le sexe féminin. D'une part, on peut noter qu'il existe une similitude entre le sexe féminin et les Maladies infectieuses et parasitaires, les Maladies du système nerveux et des organes des sens. Par ailleurs, il convient de noter qu'il existe une forte relation avec les tumeurs. ")
                 ])
                 ])
@@ -498,7 +491,7 @@ def render_page_content(pathname):
         dbc.Col(
             dbc.Card([
                 dbc.CardBody([
-                    dcc.Graph(id="ACM", figure=ACM_graph()),
+                    dcc.Graph(id="ACM", figure=fig4),
                     html.P("Dans le graphique ci-dessus, nous appliquons une analyse des correspondances multiples, toutes les variables d'intérêt seront étudiées en même temps. Nous observons que lorsque nous considérons les régions, la Région de Bruxelles-Capitale et la Région flamande présentent des similitudes, nous pourrions dire qu'il existe une relation avec les maladies du système nerveux et des organes des sens et les maladies du système circulatoire, ainsi qu'une relation avec le sexe féminin. Par ailleurs, nous avons la Région wallonne, qui est liée aux Maladies infectieuses et parasitaires, les Maladies de l'appareil digestif, des Tumeurs.")
                 ])
             ])
