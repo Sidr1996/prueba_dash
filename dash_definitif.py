@@ -49,7 +49,7 @@ data2["CD_Region"]= data2["CD_Region"] .cat.rename_categories(["Region_Flamande"
 data_2['Year']=data_2['Year'].astype('category')
 data_2["CD_Region"]=data_2["CD_Region"].astype('category')
 data_2["Age"]=data_2["Age"].astype('category')
-
+data_2["Total"]=data_2["Total"].astype('int')
 data_2["CD_Region"]= data_2["CD_Region"] .cat.rename_categories(["Region_Flamande",
 "Region Wallonne","Region_Brux_Capit"])
 
@@ -194,8 +194,8 @@ cordonnees.columns=["cord_x","cord_y","masa","categories","type_cat"]
 cordonnees=cordonnees.drop("Cause_Codes d'utilisation particulière")
 cordonnees=cordonnees.round(2)
 fig7= px.scatter(cordonnees, x="cord_x", y="cord_y", color="type_cat",hover_name="categories", size_max=60, title='Analyse de Correspondance Multiple' )
-fig7.update_xaxes(zeroline=True, zerolinewidth=2, zerolinecolor='LightPink')
-fig7.update_yaxes(zeroline=True, zerolinewidth=2, zerolinecolor='LightPink')
+#fig7.update_xaxes(zeroline=True, zerolinewidth=2, zerolinecolor='LightPink')
+#fig7.update_yaxes(zeroline=True, zerolinewidth=2, zerolinecolor='LightPink')
 
 
 
@@ -231,8 +231,8 @@ cordonneesb.columns=["cord_x","cord_y","masa","categories","type_cat"]
 cordonneesb=cordonneesb.drop("Cause_Codes d'utilisation particulière")
 cordonneesb=cordonneesb.round(2)
 fig8 = px.scatter(cordonneesb, x="cord_x", y="cord_y", color="type_cat",hover_name="categories", size_max=60,title='Analyse de Correspondance Simple Age-Cause' ,width=500)
-fig8.update_xaxes(zeroline=True, zerolinewidth=2, zerolinecolor='LightPink')
-fig8.update_yaxes(zeroline=True, zerolinewidth=2, zerolinecolor='LightPink')
+#fig8.update_xaxes(zeroline=True, zerolinewidth=2, zerolinecolor='LightPink')
+#fig8.update_yaxes(zeroline=True, zerolinewidth=2, zerolinecolor='LightPink')
 
 
 
@@ -267,8 +267,8 @@ cordonneesc.columns=["cord_x","cord_y","masa","categories","type_cat"]
 cordonneesc=cordonneesc.drop("Cause_Codes d'utilisation particulière")
 cordonneesc=cordonneesc.round(2)
 fig9 = px.scatter(cordonneesc, x="cord_x", y="cord_y", color="type_cat",hover_name="categories", size_max=60,title='Analyse de Correspondance Simple Genre-Cause',width=500 )
-fig9.update_xaxes(zeroline=True, zerolinewidth=2, zerolinecolor='LightPink')
-fig9.update_yaxes(zeroline=True, zerolinewidth=2, zerolinecolor='LightPink')
+#fig9.update_xaxes(zeroline=True, zerolinewidth=2, zerolinecolor='LightPink')
+#fig9.update_yaxes(zeroline=True, zerolinewidth=2, zerolinecolor='LightPink')
 
 app = dash.Dash(__name__,external_stylesheets=[dbc.themes.BOOTSTRAP])
 server = app.server
