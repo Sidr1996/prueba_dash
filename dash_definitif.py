@@ -5,7 +5,7 @@ from dash import Input, Output, dcc, html
 import dash_bootstrap_components as dbc
 from dash import Input, Output, dcc, html
 
-
+import numpy as np
 
 
 import pandas as pd
