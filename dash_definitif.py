@@ -47,7 +47,84 @@ data2["CD_Region"]=data2["CD_Region"].astype('category')
 data2["Age"]=data2["Age"].astype('category')
 data2["CD_Region"]= data2["CD_Region"] .cat.rename_categories(["Region_Flamande",
 "Region Wallonne","Region_Brux_Capit"])
+f_m_2018=data2.loc[data2["Year"]=="2011"]
+f_m_2019=data2.loc[data2["Year"]=="2012"]
+f_m_2018=f_m_2018.groupby(["Cause","Genre"]).sum()
+f_m_2019=f_m_2019.groupby(["Cause","Genre"]).sum()
+f_m_2019.reset_index(inplace=True)
+f_m_2018.reset_index(inplace=True)
 
+mm_2018=f_m_2018.loc[f_m_2018["Genre"]=="M"]
+ff_2018=f_m_2018.loc[f_m_2018["Genre"]=="F"]
+
+mm_2019=f_m_2019.loc[f_m_2019["Genre"]=="M"]
+ff_2019=f_m_2019.loc[f_m_2019["Genre"]=="F"]
+
+causes_final=data2["Cause"].unique().tolist()
+len(causes_final)
+
+def p_test(m_use):
+    alpha = 0.05
+    a, p = stat.fisher_exact(m_use)
+    if p < alpha:
+        return 'H0 Rejetée'
+    else :
+        return 0
+
+l1=[]
+l2=[]
+for i in range(0,len(causes_final)):
+    if (((causes_final[i]) in (list(mm_2018["Cause"])) ) & ((causes_final[i])  in (list(ff_2018["Cause"])))) & (((causes_final[i])  in (list(mm_2019["Cause"]))) &((causes_final[i])  in (list(ff_2019["Cause"])))):
+        l1.append(causes_final[i])
+        t=np.array([[int(mm_2018.Total[mm_2018.Cause==causes_final[i]]),int(ff_2018.Total[ff_2018.Cause==causes_final[i]])],[int(mm_2019.Total[mm_2019.Cause==causes_final[i]]),int(ff_2019.Total[ff_2019.Cause==causes_final[i]])]])
+        l2.append(p_test(t))
+data_100={
+    "Cause":l1,
+    "Inference":l2
+}
+df=pd.DataFrame.from_dict(data_100)
+
+
+
+
+
+#### test causes 2018 2019
+fa_m_2018=data2.loc[data2["Year"]=="2018"]
+fa_m_2019=data2.loc[data2["Year"]=="2019"]
+fa_m_2018=fa_m_2018.groupby(["Cause","Genre"]).sum()
+fa_m_2019=fa_m_2019.groupby(["Cause","Genre"]).sum()
+fa_m_2019.reset_index(inplace=True)
+fa_m_2018.reset_index(inplace=True)
+
+mma_2018=fa_m_2018.loc[fa_m_2018["Genre"]=="M"]
+ffa_2018=fa_m_2018.loc[fa_m_2018["Genre"]=="F"]
+
+mma_2019=fa_m_2019.loc[fa_m_2019["Genre"]=="M"]
+ffa_2019=fa_m_2019.loc[fa_m_2019["Genre"]=="F"]
+
+causes_final=data2["Cause"].unique().tolist()
+len(causes_final)
+
+def p_test(m_use):
+    alpha = 0.05
+    a, p = stat.fisher_exact(m_use)
+    if p < alpha:
+        return 'H0 Rejetée'
+    else :
+        return 0
+
+l1=[]
+l2=[]
+for i in range(0,len(causes_final)):
+    if (((causes_final[i]) in (list(mma_2018["Cause"])) ) & ((causes_final[i])  in (list(ffa_2018["Cause"])))) & (((causes_final[i])  in (list(mma_2019["Cause"]))) &((causes_final[i])  in (list(ffa_2019["Cause"])))):
+        l1.append(causes_final[i])
+        t=np.array([[int(mma_2018.Total[mma_2018.Cause==causes_final[i]]),int(ffa_2018.Total[ffa_2018.Cause==causes_final[i]])],[int(mma_2019.Total[mma_2019.Cause==causes_final[i]]),int(ffa_2019.Total[ffa_2019.Cause==causes_final[i]])]])
+        l2.append(p_test(t))
+dataa_200={
+    "Cause":l1,
+    "Inference":l2
+}
+dfa=pd.DataFrame.from_dict(dataa_200)
 
 app = dash.Dash(__name__,external_stylesheets=[dbc.themes.BOOTSTRAP])
 server = app.server
