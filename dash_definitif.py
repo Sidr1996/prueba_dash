@@ -4,7 +4,7 @@ from dash import Input, Output, dcc, html
 
 import dash_bootstrap_components as dbc
 from dash import Input, Output, dcc, html
-
+from figures_final import ACS_age_cause,ACS_genre_cause,ACM_graph
 import numpy as np
 
 
