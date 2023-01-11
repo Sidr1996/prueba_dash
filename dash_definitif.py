@@ -35,12 +35,6 @@ dfsss=pd.DataFrame(datasss, columns=headers)
 data2=dfsss.iloc[:,[0,2,3,4,5,6,7,8]]
 
 
-
-
-
-# data2=pd.read_excel("opendata_COD_cause (1).xlsx")
-
-# data2=data2.iloc[:,[0,2,3,4,5,6,7,8]]
 data2.columns=["CD_maladie","Cause","CD_Region","Month","Year","Age","Genre","Total"]
 data2["Total"]=data2["Total"].astype('int')
 data2= data2[data2['Cause'].notna()]
@@ -139,6 +133,11 @@ dataa_200={
 }
 dfa=pd.DataFrame.from_dict(dataa_200)
 
+
+maladies=data2.groupby("Cause").sum()
+maladies["Cause"]=maladies.index
+maladies=maladies.sort_values(by=["Total"])
+fig=px.bar(maladies,x='Total',y="Cause", title="Cause de Décès",text_auto='.8s', height=600)
 
 
 
@@ -439,7 +438,7 @@ def switch_tab(at):
         return html.Div([
             dbc.Card(
                 dbc.CardBody([
-                    dcc.Graph(id='graph_maladies', figure=fig_cause_dece()),
+                    dcc.Graph(id='graph_maladies', figure=fig),
                     html.P("Le graphique ci-dessus nous indique la quantité de personnes mortes selon le type de décès"),
                     html.P("On peut donc constater que la cause de décès qui est à la tête ce sont les Maladies d l'appareil circulatoire suivi des Tumeurs ")
                     
