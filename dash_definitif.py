@@ -137,11 +137,11 @@ dfa=pd.DataFrame.from_dict(dataa_200)
 maladies=data2.groupby("Cause").sum()
 maladies["Cause"]=maladies.index
 maladies=maladies.sort_values(by=["Total"])
-fig=px.bar(maladies,x='Total',y="Cause", title="Cause de Décès", height=600)
+fig=px.bar(maladies,x='Total',y="Cause", title="Cause des Décès", height=600)
 
 maladies2=data2.groupby(["Cause","Year"]).sum()
 maladies2.reset_index(inplace=True)
-fig2=px.line(maladies2,x="Year", y="Total", color="Cause", title="Evolution des causes par ans")
+fig2=px.line(maladies2,x="Year", y="Total", color="Cause", title="Evolution des causes par an")
 
 maladies3=data2.groupby(["Age","Genre"]).sum()
 maladies3.reset_index(inplace=True)
