@@ -804,13 +804,13 @@ def render_page_content(pathname):
             dbc.Row([
                 dbc.Col(dbc.Card([
                     dbc.CardBody([
-                        dcc.Graph(id="AC-age_genre", figure=fig9),
+                        dcc.Graph(id="AC-age_genre", figure=fig8),
                         html.P("Si nous examinons la catégorie 'Age_85+', nous constatons que les maladies causant le plus de décès dans cette catégorie sont les maladies de l'appareil circulatoire, les Maladies de l'appareil respiratoire, les Maladies de l'appareil génito-urinaire et Troubles mentaux et du comportement. Des conclusions similaires peuvent être formulées en examinant les maladies en fonction des différentes catégories d'âge. Dans le cas de l'opposé par coordonnées, on peut dire qu'il n'y a pas de relation.")
                     ])
                 ])),
                 dbc.Col(dbc.Card([
                     dbc.CardBody([
-                        dcc.Graph(id='Ac-genre_age', figure=fig8),
+                        dcc.Graph(id='Ac-genre_age', figure=fig9),
                         html.P("On observe que la première composante discrimine le sexe des individus, ce qui signifie qu'à droite on trouve le sexe masculin et à gauche le sexe féminin. D'une part, on peut noter qu'il existe une similitude entre le sexe féminin et les Maladies infectieuses et parasitaires, les Maladies du système nerveux et des organes des sens. Par ailleurs, il convient de noter qu'il existe une forte relation avec les tumeurs. ")
                 ])
                 ])
