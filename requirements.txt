@@ -21,7 +21,7 @@ pandas
 plotly==5.11.0
 prince==0.7.1
 
-scipy==1.9.3
+scipy
 
 
 gunicorn
