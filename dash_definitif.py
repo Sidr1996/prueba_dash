@@ -162,7 +162,113 @@ fig6=px.bar(region_2, x="Cause", y="Total", color="CD_Region",barmode="group", t
                 "Region_Brux_Capit": "goldenrod",})
 
 
+##### Statisque Multivarie######
+a=data_2[["Genre","Age","Cause","CD_Region"]]
+ca= prince.MCA(n_components=2,n_iter=3,copy=True,check_input=True,engine='auto',random_state=42)
 
+
+
+ca = ca.fit(a)
+cordonnees=ca.column_coordinates(a)
+
+cordonnees["masa"]=ca.col_masses_
+
+cordonnees["categories"]=cordonnees.index
+
+
+type_cordonnees=[]
+for i in cordonnees["categories"]:
+    if  "Genre" in i:
+        type_cordonnees.append("Genre")
+    elif "Age"  in i:
+        type_cordonnees.append("Age")
+    elif "Cause" in i:
+        type_cordonnees.append("Cause")
+    elif "CD_Region" in i:
+        type_cordonnees.append("Region")
+
+
+cordonnees["Type"]=type_cordonnees
+
+cordonnees.columns=["cord_x","cord_y","masa","categories","type_cat"]        
+cordonnees=cordonnees.drop("Cause_Codes d'utilisation particulière")
+cordonnees=cordonnees.round(2)
+fig7= px.scatter(cordonnees, x="cord_x", y="cord_y", color="type_cat",hover_name="categories", size_max=60, title='Analyse de Correspondance Multiple' )
+fig7.update_xaxes(zeroline=True, zerolinewidth=2, zerolinecolor='LightPink')
+fig7.update_yaxes(zeroline=True, zerolinewidth=2, zerolinecolor='LightPink')
+
+
+
+
+b=data_2[["Age","Cause"]]
+cb= prince.MCA(n_components=2,n_iter=3,copy=True,check_input=True,engine='auto',random_state=42)
+
+
+
+cb = cb.fit(b)
+cordonneesb=cb.column_coordinates(b)
+
+cordonneesb["masa"]=cb.col_masses_
+
+cordonneesb["categories"]=cordonneesb.index
+
+
+type_cordonneesb=[]
+for i in cordonneesb["categories"]:
+    if  "Genre" in i:
+        type_cordonneesb.append("Genre")
+    elif "Age"  in i:
+        type_cordonneesb.append("Age")
+    elif "Cause" in i:
+        type_cordonneesb.append("Cause")
+    elif "CD_Region" in i:
+        type_cordonneesb.append("Region")
+
+
+cordonneesb["Type"]=type_cordonneesb
+
+cordonneesb.columns=["cord_x","cord_y","masa","categories","type_cat"]        
+cordonneesb=cordonneesb.drop("Cause_Codes d'utilisation particulière")
+cordonneesb=cordonneesb.round(2)
+fig8 = px.scatter(cordonneesb, x="cord_x", y="cord_y", color="type_cat",hover_name="categories", size_max=60,title='Analyse de Correspondance Simple Age-Cause' ,width=500)
+fig8.update_xaxes(zeroline=True, zerolinewidth=2, zerolinecolor='LightPink')
+fig8.update_yaxes(zeroline=True, zerolinewidth=2, zerolinecolor='LightPink')
+
+
+
+c=data_2[["Genre","Cause"]]
+cb= prince.MCA(n_components=2,n_iter=3,copy=True,check_input=True,engine='auto',random_state=42)
+
+
+
+cc = cb.fit(c)
+cordonneesc=cb.column_coordinates(c)
+
+cordonneesc["masa"]=cc.col_masses_
+
+cordonneesc["categories"]=cordonneesc.index
+
+
+type_cordonneesc=[]
+for i in cordonneesc["categories"]:
+    if  "Genre" in i:
+        type_cordonneesc.append("Genre")
+    elif "Age"  in i:
+        type_cordonneesc.append("Age")
+    elif "Cause" in i:
+        type_cordonneesc.append("Cause")
+    elif "CD_Region" in i:
+        type_cordonneesc.append("Region")
+
+
+cordonneesc["Type"]=type_cordonneesc
+
+cordonneesc.columns=["cord_x","cord_y","masa","categories","type_cat"]        
+cordonneesc=cordonneesc.drop("Cause_Codes d'utilisation particulière")
+cordonneesc=cordonneesc.round(2)
+fig9 = px.scatter(cordonneesc, x="cord_x", y="cord_y", color="type_cat",hover_name="categories", size_max=60,title='Analyse de Correspondance Simple Genre-Cause',width=500 )
+fig9.update_xaxes(zeroline=True, zerolinewidth=2, zerolinecolor='LightPink')
+fig9.update_yaxes(zeroline=True, zerolinewidth=2, zerolinecolor='LightPink')
 
 app = dash.Dash(__name__,external_stylesheets=[dbc.themes.BOOTSTRAP])
 server = app.server
@@ -400,13 +506,13 @@ def render_page_content(pathname):
             dbc.Row([
                 dbc.Col(dbc.Card([
                     dbc.CardBody([
-                        dcc.Graph(id="AC-age_genre", figure=fig5),
+                        dcc.Graph(id="AC-age_genre", figure=fig8),
                         html.P("Si nous examinons la catégorie 'Age_85+', nous constatons que les maladies causant le plus de décès dans cette catégorie sont les maladies de l'appareil circulatoire, les Maladies de l'appareil respiratoire, les Maladies de l'appareil génito-urinaire et Troubles mentaux et du comportement. Des conclusions similaires peuvent être formulées en examinant les maladies en fonction des différentes catégories d'âge. Dans le cas de l'opposé par coordonnées, on peut dire qu'il n'y a pas de relation.")
                     ])
                 ])),
                 dbc.Col(dbc.Card([
                     dbc.CardBody([
-                        dcc.Graph(id='Ac-genre_age', figure=fig6),
+                        dcc.Graph(id='Ac-genre_age', figure=fig9),
                         html.P("On observe que la première composante discrimine le sexe des individus, ce qui signifie qu'à droite on trouve le sexe masculin et à gauche le sexe féminin. D'une part, on peut noter qu'il existe une similitude entre le sexe féminin et les Maladies infectieuses et parasitaires, les Maladies du système nerveux et des organes des sens. Par ailleurs, il convient de noter qu'il existe une forte relation avec les tumeurs. ")
                 ])
                 ])
@@ -416,7 +522,7 @@ def render_page_content(pathname):
         dbc.Col(
             dbc.Card([
                 dbc.CardBody([
-                    dcc.Graph(id="ACM", figure=fig4),
+                    dcc.Graph(id="ACM", figure=fig7),
                     html.P("Dans le graphique ci-dessus, nous appliquons une analyse des correspondances multiples, toutes les variables d'intérêt seront étudiées en même temps. Nous observons que lorsque nous considérons les régions, la Région de Bruxelles-Capitale et la Région flamande présentent des similitudes, nous pourrions dire qu'il existe une relation avec les maladies du système nerveux et des organes des sens et les maladies du système circulatoire, ainsi qu'une relation avec le sexe féminin. Par ailleurs, nous avons la Région wallonne, qui est liée aux Maladies infectieuses et parasitaires, les Maladies de l'appareil digestif, des Tumeurs.")
                 ])
             ])
