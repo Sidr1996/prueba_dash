@@ -139,6 +139,29 @@ maladies["Cause"]=maladies.index
 maladies=maladies.sort_values(by=["Total"])
 fig=px.bar(maladies,x='Total',y="Cause", title="Cause de Décès",text_auto='.8s', height=600)
 
+maladies2=data2.groupby(["Cause","Year"]).sum()
+maladies2.reset_index(inplace=True)
+fig2=px.line(maladies2,x="Year", y="Total", color="Cause", title="")
+
+maladies3=data2.groupby(["Age","Genre"]).sum()
+maladies3.reset_index(inplace=True)
+fig3=px.pie(maladies3,values="Total", names="Age", hole=.7)
+
+fig4=px.pie(maladies3,values="Total", names="Genre", hole=.7)
+
+maladies4=data2.groupby(["Age","Genre"]).sum()
+maladies4.reset_index(inplace=True)
+fig5=px.bar(maladies4, x="Age", y="Total", color="Genre",barmode="group", width=500, title="Graphique Age vs Genre")
+
+data3=data2
+region_2=data3.groupby(["Cause","CD_Region"]).sum()
+region_2.reset_index(inplace=True)
+fig6=px.bar(region_2, x="Cause", y="Total", color="CD_Region",barmode="group", title="Cuases vs Region",height=800,color_discrete_map={
+                "Region_Flamande": "red",
+                "Region Wallonne": "green",
+                "Region_Brux_Capit": "goldenrod",})
+
+
 
 
 app = dash.Dash(__name__,external_stylesheets=[dbc.themes.BOOTSTRAP])
@@ -314,13 +337,13 @@ def render_page_content(pathname):
                 # dcc.Graph(id="pastel", figure=fig_age_genre())])
             ),
             dbc.Col(dbc.Card([dbc.CardBody([
-                dcc.Graph(id="age_genre", figure=fig_ag()),
+                dcc.Graph(id="age_genre", figure=fig5),
                 html.P("Nous pouvons observer ici le nombre de décès par âge et par sexe, il faut remarquer que seulement dans la catégorie ' 85+ ', c'est-à-dire égale ou supérieure à 85 ans, le sexe féminin prédomine avec une forte différence par rapport au nombre d'hommes, contrairement au reste des catégories où le genre masculin est en tête sans différence très prononcée, néanmoins, en affirmant cela nous aboutirions à de conclusions trop hâtives car nous pourrions recourir à des tests d'hypothèse pour les confirmer ou les rejeter.")])
             ]))
         ]), html.Br(),
         dbc.Row([
             dbc.Col(dbc.Card([
-                dcc.Graph(id='region-3', figure=fig_ultimo_dopddown())]))
+                dcc.Graph(id='region-3', figure=fig6)]))
         ])
         
 
@@ -451,7 +474,7 @@ def switch_tab(at):
             dbc.Card(
                 dbc.CardBody([
                     # dcc.Dropdown(["friends","minutes"], id="drop-c", value="friends"),
-                    dcc.Graph(id='graph', figure=fig_cause_year()),
+                    dcc.Graph(id='graph', figure=fig2),
                     html.P("Ce graphique donne un aperçu clair de l'évolution des causes de décès au cours des années. Cela permet en outre de corroborer ce que le graphique précédant a montré. Autrement dit, les causes les plus courantes sont les maladies du système circulatoire et les tumeurs. Il faut souligner le fait que la courbe des tumeurs est restée constante ces dernières années, tandis que la cause des maladies du système circulatoire n'a que légèrement diminué.")
                     
                     
@@ -471,7 +494,7 @@ def tab_content(active_tab):
         return html.Div([
             dbc.Card([dbc.CardHeader("Graphique Proportion de décès par age"),
                 dbc.CardBody([
-                    dcc.Graph(id='age_graphique', figure=fig_age_genre("Age")),
+                    dcc.Graph(id='age_graphique', figure=fig3),
                     html.P("Selon le graphique, les personnes appartenant à la catégorie  '85 +' occupent la plus grande proportion, suivi de la catégorie '75-84'. "
                     "Autrement dit, plus âgés sont les individus il y a moins de posibilités de se remettre."),
                     
@@ -484,7 +507,7 @@ def tab_content(active_tab):
             dbc.Card([dbc.CardHeader("Grafique Proportion par genre "),
                 dbc.CardBody([
                     # dcc.Dropdown(["friends","minutes"], id="drop-c", value="friends"),
-                    dcc.Graph(id='graph_genre', figure=fig_age_genre("Genre")),
+                    dcc.Graph(id='graph_genre', figure=fig4),
                     html.P("Le graphique révèle que le pourcentage de femmes et d'hommes est quasiment égal. Ces informations nous incitent à savoir si la proportion de femmes et d'hommes diffère selon la nature des causes de décès. Pour y répondre, nous proposons des tests d'hypothèse présentés ci-après.")
                     
                     
