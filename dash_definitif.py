@@ -48,7 +48,7 @@ data2["Age"]=data2["Age"].astype('category')
 data2["CD_Region"]= data2["CD_Region"] .cat.rename_categories(["Region_Flamande",
 "Region Wallonne","Region_Brux_Capit"])
 app = dash.Dash(__name__,external_stylesheets=[dbc.themes.BOOTSTRAP])
-
+server = app.server
 # the style arguments for the sidebar. We use position:fixed and a fixed width
 SIDEBAR_STYLE = {
     "position": "fixed",
