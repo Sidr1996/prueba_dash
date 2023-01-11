@@ -14,7 +14,7 @@ gspread-dataframe==3.3.0
 
 
 numpy
-
+matplotlib
 
 pandas
 
