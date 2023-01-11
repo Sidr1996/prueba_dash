@@ -4,7 +4,7 @@ from dash import Input, Output, dcc, html
 
 import dash_bootstrap_components as dbc
 from dash import Input, Output, dcc, html
-from figures_final import *
+
 import numpy as np
 
 
@@ -12,8 +12,54 @@ import pandas as pd
 import scipy.stats as stat
 import plotly.express as px
 import prince
+import gspread
+from gspread_dataframe import get_as_dataframe
+credentials={
+  "type": "service_account",
+  "project_id": "dashboardcv",
+  "private_key_id": "e2d3136b06c56edce23d297f06a0cdd59af5735d",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCmmnuwnR18+7wY\nU1XxN/ty8BViY3y1gx7+GIsis1ynd2ek8QPyVW8biDVgLOBzUZE3sZduZIJpmmLA\nYDJa1+Hr2ppXuzIy8kDpesokm7wr7htxJzlNkM2Q/puvUA6NToLtr9LldcuVISlR\nY1J0UMMfoXNH20ulew7e0tvQhxFeZuBTj8Ws+NKwZX/yquzAc3OzzPly32wC8bfx\nN1YTeDy/HxMG3JfgrB0o44NVVQv4ALaJBhk1aacjwbaoNMCnP4m9FpKJbt5S3Plu\ncF6YLDhcRtQ5TgK4Fj0QuCp+Rw67nPGHUm4baneDMqt/fc74Ic8qv+coAolFowsY\nLtyUZwtxAgMBAAECggEABmcqCU3kh/zpy/qJ80keRBrXi448yQIW0xew4z7G+RW0\n+UkdCHeBm2qG+KEI6E2yedQ8uGyq+XGKSY/453ZkE6s1YtlKMtyOI5sJQVJt7zdJ\nvTXPdTxzNhce9yQpxwMFM6rd/V0jW6IoYx0g2mEPOrw7AMA8HkpGNkie05sZTwov\ntS8g39mRGUCcCkLN9xg7bhbHU3ypyUDH6sqiAXjzlvxGTo/3qUMgVAM56aZ+7Ec3\n8uG6Ze4YkNyExf3NuKMvrMCLGGq3o84rxUgaHsJiX5Xub47si5yfxdZz2ijwGrFK\nHnI5HIUwJuw1WL/5l+woHFShnsvNJ1rwAUHEeKFu9QKBgQDh7XVHh2c3Jofe/M5v\nUugJHquMc2jOVqM2xDNkDwcLERVt50CSxsjiVM92wzEKMQQ9lhZi7+FIek+3MesW\n9UldrMrH9f6QHsaZE2MiCR7uIQ8FMyMIN2UGMAjw07Noq+qQBGS73vXfg10F9lmg\n/xfj1kpcSIJ3UUi0nP15TcNALQKBgQC8x4o2SoUjA7vN8sBwu8KaZVbyWFI6LaJD\nHl/fNCPXaBLqR3LvgVNaOGok0vGp1TN8eH7qn9ahmDwKPBEhdK739Ibbuzk2SneI\nyXF2GY7qVtUdxNrAG7Ksp32H0HVIcJF+rtOezHIWC1V0PuM/vpJW0CcvTgoMZjqK\nF+p/ah7+1QKBgBPiWlgZSrRH591wUprpqRJkaKTL44WFioffbMZ5rB0FO+WYXM6O\nQE/rNvc05rQG7GCfPQkoI6PFYA63jgFPRU3BT3eZ5vW4P7JpSmhMdTRwJGpIveST\nO4j34VGQ0FF+D/7s5BDE5s7tONq1e933lZqv2YuVtiXaOZPr3UM33N9hAoGABfrc\nKfQaW42WuWNjLS8FbxaetnaNxEIFzdJ8fvmL2Rr23mz8+xFBrq3yzs/Pz+1tABhh\nDNWbWusTm89jS4gCsuAQFY3MtieNucuHyJHusQWnIpZFx6gY9NcpZs/3px/JvBWV\npoYbZw9c2Z3UXQSQZieZ1inGr7XdTNqNFxQpfzECgYEAhCqYspDxrSZhJy6xndGa\nuDPpP8T5BoOqKzTs4nRNNFFNbzbUHRdB9mu0ZaC5Osb6R/Hg7Td4Yqk2JLQF4MLZ\nZYjtJEq3HDJzfmvXmQSQCVdbbJiiLpg0Vx8YM8+MRnHdXllhr4oxGCklwGbRWS1n\nUQ/yWJ+cMirIBUtdARf0I6o=\n-----END PRIVATE KEY-----\n",
+  "client_email": "drive-577@dashboardcv.iam.gserviceaccount.com",
+  "client_id": "107779434677742178563",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/drive-577%40dashboardcv.iam.gserviceaccount.com"
+}
 
-data2=data_brut()
+gc = gspread.service_account_from_dict(credentials)
+wks = gc.open("cause").sheet1
+datasss=wks.get_all_values()
+headers=datasss.pop(0)
+dfsss=pd.DataFrame(datasss, columns=headers)
+data2=dfsss.iloc[:,[0,2,3,4,5,6,7,8]]
+
+
+
+
+
+# data2=pd.read_excel("opendata_COD_cause (1).xlsx")
+
+# data2=data2.iloc[:,[0,2,3,4,5,6,7,8]]
+data2.columns=["CD_maladie","Cause","CD_Region","Month","Year","Age","Genre","Total"]
+data2["Total"]=data2["Total"].astype('int')
+data2= data2[data2['Cause'].notna()]
+data2.drop(data2[data2["Cause"]=='#N/A'].index, inplace=True)
+data_2=pd.DataFrame(data2.values.repeat(data2["Total"], axis=0), columns=data2.columns)
+data2['Year']=data2['Year'].astype('category')
+data2["CD_Region"]=data2["CD_Region"].astype('category')
+data2["Age"]=data2["Age"].astype('category')
+data2["CD_Region"]= data2["CD_Region"] .cat.rename_categories(["Region_Flamande",
+"Region Wallonne","Region_Brux_Capit"])
+
+data_2['Year']=data_2['Year'].astype('category')
+data_2["CD_Region"]=data_2["CD_Region"].astype('category')
+data_2["Age"]=data_2["Age"].astype('category')
+
+data_2["CD_Region"]= data_2["CD_Region"] .cat.rename_categories(["Region_Flamande",
+"Region Wallonne","Region_Brux_Capit"])
+
+
 f_m_2018=data2.loc[data2["Year"]=="2011"]
 f_m_2019=data2.loc[data2["Year"]=="2012"]
 f_m_2018=f_m_2018.groupby(["Cause","Genre"]).sum()
